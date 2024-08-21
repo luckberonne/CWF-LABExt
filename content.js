@@ -83,8 +83,7 @@ function fillInputs() {
                     input.value = sampleData;
                     input.dispatchEvent(new Event('input', { bubbles: true }));
                     input.dispatchEvent(new Event('change', { bubbles: true }));
-                }
-                else{
+                } else {
                     console.log('No se llenará el input: ', formControlName);
                 }
             }
@@ -161,24 +160,32 @@ function selectRandomOptionInMatAutocompletes() {
     }
 }
 
-function uploadFile(filePath) {
-    const inputFile = document.querySelector('#fileOriginal');
-    if (inputFile) {
-        const dataTransfer = new DataTransfer();
-        const file = new File([filePath], 'sopamacaco.png', { type: 'image/png' }); // Cambia el nombre y tipo según sea necesario
-        dataTransfer.items.add(file);
-        inputFile.files = dataTransfer.files;
+async function uploadImageFromUrl(url, inputSelector) {
+    try {
+        // Descarga la imagen desde la URL
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Error al descargar la imagen');
+        const blob = await response.blob();
 
-        // Dispara los eventos necesarios para que el input reconozca el cambio
-        const event = new Event('change', { bubbles: true });
-        inputFile.dispatchEvent(event);
+        const file = new File([blob], 'cheems.png', { type: blob.type });
 
-        console.log('Archivo cargado exitosamente');
-    } else {
-        console.error('Elemento input de tipo file no encontrado');
+        const inputFile = document.querySelector(inputSelector);
+        if (inputFile) {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            inputFile.files = dataTransfer.files;
+
+            const event = new Event('change', { bubbles: true });
+            inputFile.dispatchEvent(event);
+
+            console.log('Archivo cargado exitosamente desde URL');
+        } else {
+            console.error('Elemento input de tipo file no encontrado');
+        }
+    } catch (error) {
+        console.error('Error al cargar la imagen desde la URL:', error);
     }
 }
-
 
 const values = generateMatchingValues();
 setTimeout(() => {
@@ -189,21 +196,21 @@ setTimeout(() => {
             "/html/body/div[3]/div[2]/div/mat-dialog-container/app-confirmacion-dialog/div[2]/div[2]/button"
         ];
         const delayBetweenClicks = 1500;
-        
+
         clickButtonsWithDelay(buttonSelectors, delayBetweenClicks);
-        
+
         setTimeout(() => {
             const matSelectIds = [
                 '#emisor.mat-select',
                 '#receptor.mat-select'
             ];
-            
+
             selectRandomOptionInMatSelects(matSelectIds);
-            
+
             setTimeout(() => {
                 closeMatDialogIfExists();
                 selectRandomOptionInMatAutocompletes();
-                
+
                 setTimeout(() => {
                     fillInputs();
                     const overlay = document.querySelector('.cdk-overlay-backdrop');
@@ -215,10 +222,10 @@ setTimeout(() => {
                         const excludedSelects = ['emisor', 'receptor'];
                         selectFirstOptionInAllMatSelects(excludedSelects);
                     }, 2000);
-                    uploadFile('images/sopamacaco.png');
+                    uploadImageFromUrl('https://i.postimg.cc/hjRF2wNd/cheems-meme-digan.png', '#fileOriginal');
                 }, 3500);
             }, 2000);
-            
+
         }, (buttonSelectors.length * delayBetweenClicks) + 2000);
     }
 }, 3000);

@@ -15,9 +15,13 @@
         "128": "icon128.png"
       }
     },
+    "icons": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
     "content_scripts": [
       {
-        "resources": ["images/sopamacaco.png"],
         "matches": [
           "https://krikos360lab.planexware.com/v2/main/crear/*",
           "http://localhost:4200/v2/main/crear/*",
@@ -26,5 +30,6 @@
         "js": ["content.js"]
       }
     ]
+
   }
   
