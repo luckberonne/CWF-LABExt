@@ -1,0 +1,30 @@
+{
+    "manifest_version": 3,
+    "name": "CWF-LABExt",
+    "version": "1.0",
+    "description": "Automatically fills all inputs on the page with data.",
+    "permissions": ["activeTab", "scripting"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+      }
+    },
+    "content_scripts": [
+      {
+        "resources": ["images/sopamacaco.png"],
+        "matches": [
+          "https://krikos360lab.planexware.com/v2/main/crear/*",
+          "http://localhost:4200/v2/main/crear/*",
+          "https://localhost:4200/v2/main/crear/*"
+        ],
+        "js": ["content.js"]
+      }
+    ]
+  }
+  
