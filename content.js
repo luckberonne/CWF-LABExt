@@ -88,6 +88,10 @@ function fillInputs() {
                 }
             }
         });
+        // setTimeout(() => {
+        //     clickAddButtonWhenEnabled('/html/body/app-root/div/app-main-k360/div/div/div[3]/app-carga-manual/div/app-cwf-formulario/app-cwf-items/mat-card/div[2]/div/div/div/div/div[4]/button[2]');
+        // }, 2000);
+
     } catch (error) {
         console.error('Error al llenar los inputs', error);
     }
@@ -127,6 +131,7 @@ function selectFirstOptionInAllMatSelects(excludedSelects) {
                 }, index * 1000);
             }
         });
+
     } catch (error) {
         console.error('Error al seleccionar la primera opción en los mat-selects', error);
     }
@@ -186,6 +191,19 @@ async function uploadImageFromUrl(url, inputSelector) {
         console.error('Error al cargar la imagen desde la URL:', error);
     }
 }
+
+function clickAddButtonWhenEnabled(lugar) {
+    const xpath = lugar;
+    const addButton = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+
+    if (addButton && !addButton.disabled) {
+        addButton.click();
+        console.log("Botón de agregar presionado.");
+    } else {
+        console.log("Botón de agregar no habilitado aún.");
+    }
+}
+
 
 const values = generateMatchingValues();
 setTimeout(() => {
